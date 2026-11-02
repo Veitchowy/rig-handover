@@ -30,6 +30,7 @@ describe('GET /digest/:night', () => {
     expect(html).toContain('lane-07');
     expect(html).toContain('<h1>digest · 2026-10-28</h1>');
     expect(html.match(/<table/g)).toHaveLength(1);
+    expect(html).toContain('1 line did not parse');
   });
 
   it('answers 404 for a night with no file', async () => {
@@ -65,10 +66,14 @@ describe('GET /api/digest/:night', () => {
     const body = (await res.json()) as Night;
     expect(res.status).toBe(200);
     expect(body.night).toBe('2026-10-28');
-    expect(body.badLines).toBe(0);
-    const jobs = body.rows.map((r) => r.job);
-    expect(jobs.length).toBeGreaterThan(0);
-    expect(jobs).toEqual([...jobs].sort());
+    expect(body.badLines).toBe(1);
+    expect(body.rows.map((r) => r.job)).toEqual([
+      'digest/render',
+      'fixtures/refresh',
+      'lane/sync',
+      'notes/backup',
+      'rig/rotate-logs',
+    ]);
   });
 
   it('answers 404 with a JSON error for a night with no file', async () => {
