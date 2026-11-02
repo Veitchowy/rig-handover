@@ -18,6 +18,8 @@ export type DigestRow = {
   runs: number;
   /** Number of parsed lines for this job with status "retry". */
   retries: number;
+  /** Number of parsed lines for this job with status "fail". ok lines = runs - retries - fails. */
+  fails: number;
   /** Status of the job's last line. */
   lastStatus: RunStatus;
   /** `error` of the job's latest line that had one; null when no line had one (render as "—"). */
