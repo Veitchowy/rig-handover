@@ -1,8 +1,9 @@
 ---
 plan: morning-digest
-status: ready
+status: done
 owner: rook
 opened: 2026-10-29
+closed: 2026-11-02
 ---
 
 # Morning digest
@@ -77,3 +78,23 @@ page again with `LANE_MARKER` unset (the banner reads "no marker set") and uploa
 link. Move this plan to `docs/plans/done/` with its issue list.
 
 Done when: the preview link no longer shows the lane marker.
+
+## Issues
+
+| # | Issue | Blocked by | Worker | Closed |
+|---|-------|-----------|--------|--------|
+| 1 | Digest types: DigestRow + readNight signature | — | claude-code · opus-5.5 · default | 2026-11-02 |
+| 2 | Run log reader | #1 | claude-code · opus-5.5 · default | 2026-11-02 |
+| 3 | Digest page: GET /digest/:night | #1 (check: #2) | claude-code · sonnet-5.5 · default | 2026-11-02 |
+| 4 | Digest JSON: GET /api/digest/:night | #1 (check: #2, #3) | claude-code · sonnet-5.5 · default | 2026-11-02 |
+| 5 | Board links each night to its digest | #1 (check: #2, #3) | claude-code · sonnet-5.5 · default | 2026-11-02 |
+| 6 | Route tests for the digest | #1 (check: #3, #4) | claude-code · sonnet-5.5 · default | 2026-11-02 |
+| 7 | Preview for review | #2, #3, #4, #5 | claude-code · opus-5.5 · default | 2026-11-02 |
+| 8 | Clean up the preview marker | #7, review in | claude-code · opus-5.5 · default | 2026-11-02 |
+
+§ 1 went to two issues (#1 types first, #2 reader) so § 2 could start in parallel. `fails` was added to
+`DigestRow` after #1 closed (d49dc89), for the board counts and the fail mark.
+#7 was closed when the link went out, before the reviewer looked, and reopened: § 3 is done when the
+review is in, not when the link is sent. The preview is GitHub Pages of this repo, deployed by
+`.github/workflows/preview.yml`; Pages' CDN caches for up to 10 minutes (`max-age=600`), so a re-upload
+is checked from outside after that.
